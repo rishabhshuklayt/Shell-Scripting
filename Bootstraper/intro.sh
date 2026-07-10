@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+echo "Current shell: $0"
+echo "BASH_VERSION: $BASH_VERSION"
+command -v nvm
+type nvm
+
 echo "Welcome To Rishabh Bootstraper"
 if ping -c 1 google.com ; then
     echo "internet is reachable"
@@ -23,7 +28,7 @@ read -p "Do you still want to continue(yes/no): " User_Choice
         exit 1
     else 
         echo "good job"
-        # exit 0 # You probably want to stop the script if they don't say yes!
+        exit 0 
     fi
 else
 
@@ -45,7 +50,7 @@ read -p "Do you still want to continue(yes/no): " User_Choice
         exit 1
     else 
         echo "good job"
-        exit 0 # You probably want to stop the script if they don't say yes!
+        exit 0 
     fi
 else 
 
@@ -53,6 +58,53 @@ echo "The CPU usage is Optimal"
 
 fi
 
-exit 0
+echo "Checking RAM availability"
+
+# i will put the ram availability check here to prevent the callstack exceeed issue 
+
+# RAM_AVAILABLE=$(top -l 1 | grep -i)
+
+# exit 0
+
+######
+#. Adding check for node existence 
+######
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    . "$NVM_DIR/nvm.sh"
+else
+    echo "NVM is not installed."
+fi
+
+if ! command -v nvm ; then
+    echo "NVM exists"
+
+    if command -v node &&  command -v npm > /dev/null ; then 
+        echo "node and npm exist " 
+    fi
+else 
+
+echo "NVM dosent exist..  "
+
+echo "Installing NVM ......."
+
+if ! command -v brew ; then 
+    echo "brew in not installed please Insatll Homebrew"
+    echo "installing Homebrew in users System"
+    if /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
+    echo "Homebrew installed successfully."
+       else
+    echo "Failed to install Homebrew."
+    exit 1 
+    fi
+else
+    echo "brew found  installed "
+
+fi    
+
+fi
+
+echo "Node is Available"
 
 read -p "Press Enter to exit..."
